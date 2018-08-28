@@ -29,6 +29,14 @@ export class Module {
 
   tick(): void {
     for (let module of this.modules) {
+      for (const signalName of module.getInputs()) {
+        if (this.signalNetworkManager.signalNames().indexOf(signalName) > -1) {
+          module.addInputSignals(signalName, this.signalNetworkManager.getSignals(signalName))
+        }
+      }
+    }
+
+    for (let module of this.modules) {
       module.tick()
     }
   }
@@ -42,14 +50,6 @@ export class Module {
       for (const signalName of module.getOutputs()) {
         this.signalNetworkManager.registerSignal(signalName)
         this.signalNetworkManager.addSignals(signalName, module.getOutputSignals(signalName))
-      }
-    }
-
-    for (let module of this.modules) {
-      for (const signalName of module.getInputs()) {
-        if (this.signalNetworkManager.signalNames().indexOf(signalName) > -1) {
-          module.addInputSignals(signalName, this.signalNetworkManager.getSignals(signalName))
-        }
       }
     }
   }
