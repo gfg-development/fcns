@@ -18,9 +18,12 @@ export class Module {
   private inputSignalConnections: SignalConnection[] = []
   private modules: Module[] = []
 
-  constructor() {
+  constructor(describe: boolean = true) {
     this.signalNetworkManager = new SignalNetworkManager()
-    this.describe()
+
+    if (describe) {
+      this.describe()
+    }
   }
 
   describe(): void {
