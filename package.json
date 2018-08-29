@@ -1,6 +1,6 @@
 {
   "name": "fcns",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A Factorio Circuit Network Simulator",
   "keywords": [],
   "main": "dist/fcns.umd.js",
