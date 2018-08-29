@@ -30,6 +30,10 @@ export class SignalNetworkManager {
     return Object.keys(this.signalNetworks)
   }
 
+  getNetworks(): { [id: string]: SignalNetwork } {
+    return this.signalNetworks
+  }
+
   private testForSignal(signal: string) {
     if (!(signal in this.signalNetworks)) {
       throw new Error('SignalNetworkManager: unknown signal')

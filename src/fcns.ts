@@ -3,3 +3,4 @@ export { ArithmeticCombinator, Operations as ArithmeticOperations } from './Arit
 export { DeciderCombinator, Operations as DeciderOperations } from './DeciderCombinator'
 export { Signals, SpecialSignals, getSignalCount } from './Signals'
 export { Module, SignalCollection } from './Module'
+export { VCDGenerator } from './VCDGenerator'

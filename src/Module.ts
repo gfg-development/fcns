@@ -1,5 +1,6 @@
 import { SignalNetworkManager } from './SignalNetworkManager'
 import { Signals } from './Signals'
+import { VCDGenerator } from './VCDGenerator'
 
 export interface SignalCollection {
   red: string
@@ -17,6 +18,8 @@ export class Module {
   private outputSignalConnections: SignalConnection[] = []
   private inputSignalConnections: SignalConnection[] = []
   private modules: Module[] = []
+
+  private vcdGenerator: VCDGenerator | null = null
 
   constructor(describe: boolean = true) {
     this.signalNetworkManager = new SignalNetworkManager()
@@ -54,6 +57,11 @@ export class Module {
         this.signalNetworkManager.registerSignal(signalName)
         this.signalNetworkManager.addSignals(signalName, module.getOutputSignals(signalName))
       }
+    }
+
+    if (this.vcdGenerator != null) {
+      const generator: VCDGenerator = this.vcdGenerator as VCDGenerator
+      generator.handleSignalNetworks(this.signalNetworkManager.getNetworks())
     }
   }
 
@@ -120,6 +128,10 @@ export class Module {
     }
 
     this.signalNetworkManager.addSignals(innerSignalName, signals)
+  }
+
+  dump(generator: VCDGenerator) {
+    this.vcdGenerator = generator
   }
 
   protected getSignals(signal: string): Signals {
