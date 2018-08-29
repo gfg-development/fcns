@@ -61,6 +61,7 @@ export class Module {
 
     if (this.vcdGenerator != null) {
       const generator: VCDGenerator = this.vcdGenerator as VCDGenerator
+      generator.finishTimeStep()
       generator.handleSignalNetworks(this.signalNetworkManager.getNetworks())
     }
   }
@@ -128,6 +129,11 @@ export class Module {
     }
 
     this.signalNetworkManager.addSignals(innerSignalName, signals)
+
+    if (this.vcdGenerator != null) {
+      const generator: VCDGenerator = this.vcdGenerator as VCDGenerator
+      generator.handleSignal(innerSignalName, signals)
+    }
   }
 
   dump(generator: VCDGenerator) {

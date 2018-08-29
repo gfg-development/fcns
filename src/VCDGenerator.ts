@@ -6,37 +6,40 @@ export class VCDGenerator {
   private fileName: string
   private signalNetworksInTime: { [id: string]: Signals }[] = []
   private signalHierarchy: { [id: string]: string[] } = {}
+  private currentSignals: { [id: string]: Signals } = {}
 
   constructor(fileName: string) {
     this.fileName = fileName
   }
 
   handleSignalNetworks(signalNetworks: { [id: string]: SignalNetwork }): void {
-    //console.log(JSON.stringify(signalNetworks, null, 2));
-
     const signalNames = Object.keys(signalNetworks)
 
     signalNames.forEach(signalName => {
       const signals = signalNetworks[signalName].getSignals()
-      if (!Object.keys(this.signalHierarchy).includes(signalName)) {
-        this.signalHierarchy[signalName] = []
+      this.handleSignal(signalName, signals)
+    })
+  }
+
+  handleSignal(signalName: string, signals: Signals) {
+    if (!Object.keys(this.signalHierarchy).includes(signalName)) {
+      this.signalHierarchy[signalName] = []
+    }
+
+    const signalTypes = Object.keys(signals)
+
+    signalTypes.forEach(signalType => {
+      if (!this.signalHierarchy[signalName].includes(signalType)) {
+        this.signalHierarchy[signalName].push(signalType)
       }
-
-      const signalTypes = Object.keys(signals)
-
-      signalTypes.forEach(signalType => {
-        if (!this.signalHierarchy[signalName].includes(signalType)) {
-          this.signalHierarchy[signalName].push(signalType)
-        }
-      })
     })
 
-    const signals: { [id: string]: Signals } = {}
-    Object.keys(signalNetworks).forEach((name: string) => {
-      signals[name] = signalNetworks[name].getSignals()
-    })
+    this.currentSignals[signalName] = signals
+  }
 
-    this.signalNetworksInTime.push(signals)
+  finishTimeStep() {
+    this.signalNetworksInTime.push(this.currentSignals)
+    this.currentSignals = {}
   }
 
   finishDump() {
