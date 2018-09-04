@@ -136,6 +136,68 @@ describe('ArithmeticCombinator', () => {
       expect(combinator.getOutputSignals('greenOut')).toEqual(output)
       expect(combinator.getOutputSignals('redOut')).toEqual(output)
     })
+
+    it('An exponential operation', () => {
+      const red: Signals = {
+        COPPER_PLATE: 16
+      }
+
+      const green: Signals = {
+        IRON_PLATE: 3
+      }
+
+      const output: Signals = {
+        IRON_PLATE: 16 * 16 * 16
+      }
+
+      let combinator = new ArithmeticCombinator(
+        { red: 'redIn', green: 'greenIn' },
+        { red: 'redOut', green: 'greenOut' },
+        'COPPER_PLATE',
+        Operations.EXP,
+        'IRON_PLATE',
+        'IRON_PLATE'
+      )
+
+      combinator.addInputSignals('redIn', red)
+      combinator.addInputSignals('greenIn', green)
+
+      combinator.tick()
+      combinator.clearNetworks()
+      combinator.tock()
+      expect(combinator.getOutputSignals('greenOut')).toEqual(output)
+      expect(combinator.getOutputSignals('redOut')).toEqual(output)
+    })
+
+    it('An exponential operation with negative exponent', () => {
+      const red: Signals = {
+        COPPER_PLATE: 16
+      }
+
+      const green: Signals = {
+        IRON_PLATE: -3
+      }
+
+      const output: Signals = {}
+
+      let combinator = new ArithmeticCombinator(
+        { red: 'redIn', green: 'greenIn' },
+        { red: 'redOut', green: 'greenOut' },
+        'COPPER_PLATE',
+        Operations.EXP,
+        'IRON_PLATE',
+        'IRON_PLATE'
+      )
+
+      combinator.addInputSignals('redIn', red)
+      combinator.addInputSignals('greenIn', green)
+
+      combinator.tick()
+      combinator.clearNetworks()
+      combinator.tock()
+      expect(combinator.getOutputSignals('greenOut')).toEqual(output)
+      expect(combinator.getOutputSignals('redOut')).toEqual(output)
+    })
   })
 
   describe('each', () => {

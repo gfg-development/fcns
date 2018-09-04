@@ -137,7 +137,7 @@ export class ArithmeticCombinator extends Module {
         }
 
       case Operations.EXP:
-        if (rightOperand >= 0) {
+        if (rightOperand <= 0) {
           return 0
         } else {
           return Math.pow(leftOperand, rightOperand)
